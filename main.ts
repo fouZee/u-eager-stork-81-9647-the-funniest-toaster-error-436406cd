@@ -11,7 +11,7 @@ import { dirname } from "node:path";
 // Deadpan, one voice, no toast puns: the crumb tray — the part of the
 // toaster nobody ever cleans — finally files a complaint.
 const ENTRY =
-  "ERROR: Crumb tray full. I am carrying four years of your breakfasts. Please help.";
+  "ERROR: Crumb tray full. Four years of your breakfasts live inside me now. Send help.";
 
 const MAX_CHARS = 120;
 
@@ -25,6 +25,12 @@ function validate(entry: string): void {
   }
   if (entry !== entry.trim()) {
     throw new Error("entry must not start or end with white space");
+  }
+  if (/[\r\n]/.test(entry)) {
+    throw new Error("entry must be a single line");
+  }
+  if (/[\u0000-\u001f\u007f]/.test(entry)) {
+    throw new Error("entry must not contain control characters");
   }
 }
 
